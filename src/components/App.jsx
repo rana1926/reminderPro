@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { addReminder} from '../actions';
+import '../index.css';
 
 class App extends Component{
 	constructor(props) {
@@ -12,14 +13,28 @@ class App extends Component{
 	addReminder(){
 		this.props.addReminder(this.state.text);
 	}
+	renderReminders(){
+		const { reminders } = this.props;
+		return (
+			<ul className="list-group">
+				{
+					reminders.map(reminder =>{
+						return (
+							<li key={reminder.id} className="list-group-item">{reminder.text}</li>
+						)
+					})
+					
+				}
+			</ul>
+		)
+	}
 	render(){
-		console.log('this props', this.props)
 		return (
 			<div className="App">
 				<div className="title">
 					Reminder Pro
 				</div>
-				<div className="form-inline">
+				<div className="form-inline reminder-form">
 					<div className="form-group">
 						<input
 							className="form-control"
@@ -28,8 +43,13 @@ class App extends Component{
 							onChange={event => this.setState({text: event.target.value})}
 						/>
 					</div>
-					<button className="btn btn-success" type="button" onClick={()=>this.addReminder()}>Add Reminder</button>
+					<button 
+						className="btn btn-success" 
+						type="button" 
+						onClick={()=>this.addReminder()}>Add Reminder
+					</button>
 				</div>
+				{this.renderReminders()}
 			</div>
 		)
 	}
